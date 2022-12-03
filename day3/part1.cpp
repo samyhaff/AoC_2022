@@ -5,10 +5,11 @@ using namespace std;
 int main() {
     string rucksack;
     int n, ans = 0;
+    unordered_set<char> set;
 
     while (getline(cin, rucksack)) {
+        set.clear();
         n = rucksack.length();
-        unordered_set<char> set;
         for (auto it = rucksack.begin(); it < rucksack.begin() + n / 2; it++)
             set.insert(*it);
         for (auto it = rucksack.begin() + n / 2; it != rucksack.end(); it++) {
