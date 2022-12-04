@@ -2,8 +2,8 @@
 
 using namespace std;
 
-bool is_included(pair<int, int> a, pair<int, int> b) {
-    return a.first <= b.first && a.second >= b.second;
+bool overlap(pair<int, int> a, pair<int, int> b) {
+    return a.first <= b.first && a.second >= b.first;
 }
 
 int main() {
@@ -13,10 +13,9 @@ int main() {
 
     while (getline(cin, line)) {
         sscanf(line.c_str(), "%d-%d,%d-%d", &a.first, &a.second, &b.first, &b.second);
-        if (is_included(a, b) || is_included(b, a)) ans++;
+        if (overlap(a, b) || overlap(b, a)) ans++;
     }
 
     cout << ans << endl;
-
     return 0;
 }
