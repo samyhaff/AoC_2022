@@ -1,11 +1,17 @@
 #include <bits/stdtr1c++.h>
 
+using namespace std;
+
 #define N_STACKS 9
 #define HEIGHT 8
 
-using namespace std;
+struct instruction {
+    int count;
+    int from;
+    int to;
+};
 
-vector<vector<char>> read_input() {
+vector<vector<char>> read_stacks() {
     string line;
     char crate;
     vector<vector<char>> stacks(N_STACKS, vector<char>());
@@ -24,13 +30,32 @@ vector<vector<char>> read_input() {
     return stacks;
 }
 
-int main() {
-    vector<vector<char>> stacks = read_input();
-    for (auto& stack: stacks) {
-        for (char crate: stack)
-            cout << crate << " ";
-        cout << endl;
+vector<instruction> get_instructions() {
+    string line, word;
+    vector<instruction> instructions;
+    int count, from, to;
+    instruction instruction;
+
+    while (getline(cin, line)) {
+        stringstream s(line);
+        s >> word >> count >> word >> from >> word >> to;
+        instruction = { .count = count, .from = from, .to = to };
+        instructions.push_back(instruction);
     }
+
+    return instructions;
+}
+
+int main() {
+    vector<vector<char>> stacks;
+    string line;
+    vector<instruction> instructions;
+
+    stacks = read_stacks();
+    getline(cin, line); getline(cin, line);
+    instructions = get_instructions();
+    for (auto instr: instructions)
+        cout << instr.count << " " << instr.from << " " << instr.to << endl;
 
     return 0;
 }
