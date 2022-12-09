@@ -18,7 +18,7 @@ vector<vector<char>> read_stacks() {
 
     for (int i = 0; i < HEIGHT; i++) {
         getline(cin, line);
-        for (int i = 0; i < line.length() / 4; i++) {
+        for (int i = 0; i < line.length() / 4 + 1; i++) {
             if (line[4 * i + 1] != ' ')
                 stacks[i].push_back(line[4 * i + 1]);
         }
@@ -39,23 +39,38 @@ vector<instruction> get_instructions() {
     while (getline(cin, line)) {
         stringstream s(line);
         s >> word >> count >> word >> from >> word >> to;
-        instruction = { .count = count, .from = from, .to = to };
+        instruction = { .count = count, .from = from - 1, .to = to - 1 };
         instructions.push_back(instruction);
     }
 
     return instructions;
 }
 
+void process_intructions(vector<vector<char>>& stacks,
+                         vector<instruction>& instructions) {
+    int val;
+    for (auto& instruction: instructions) {
+        for (int i = 0; i < instruction.count; i++) {
+            val = stacks[instruction.from].back(); stacks[instruction.from].pop_back();
+            stacks[instruction.to].push_back(val);
+        }
+    }
+}
+
 int main() {
     vector<vector<char>> stacks;
     string line;
     vector<instruction> instructions;
+    string output;
 
     stacks = read_stacks();
     getline(cin, line); getline(cin, line);
     instructions = get_instructions();
-    for (auto instr: instructions)
-        cout << instr.count << " " << instr.from << " " << instr.to << endl;
+    process_intructions(stacks, instructions);
+    for (auto& stack: stacks)
+        output.push_back(stack.back());
+
+    cout << output << endl;
 
     return 0;
 }
