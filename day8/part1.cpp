@@ -16,7 +16,7 @@ vector<vector<int>> read_input() {
     return forest;
 }
 
-int solve(vector<vector<int>> forest) {
+int solve(const vector<vector<int>>& forest) {
     unordered_set<int> visible;
     int n = forest.size(), m = forest[0].size();
     int max_height;
