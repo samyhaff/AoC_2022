@@ -74,7 +74,7 @@ int solve(vector<Monkey>& monkeys, int nb_rounds) {
 
     run_rounds(monkeys, nb_rounds);
 
-    for (auto monkey: monkeys)
+    for (auto& monkey: monkeys)
         nb_inspections.push_back(monkey.nb_inspections);
     sort(nb_inspections.begin(), nb_inspections.end());
     ans = nb_inspections.end()[-1] * nb_inspections.end()[-2];
