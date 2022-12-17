@@ -13,6 +13,7 @@ int main() {
         } else
             sum += stoi(line);
     }
+    ans = max(ans, sum);
 
     cout << ans << endl;
 
