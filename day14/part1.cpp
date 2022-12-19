@@ -34,11 +34,43 @@ pair<int, int> find_limits(const vector<vector<pair<int, int>>>& lines) {
     return limits;
 }
 
+vector<vector<char>> make_map(const vector<vector<pair<int, int>>>& lines) {
+    auto limits = find_limits(lines);
+    vector<vector<char>> map(limits.second + 1, vector<char>(limits.first + 1, '.'));
+    pair<int, int> direction, coordinates;
+
+    for (const auto& line: lines) {
+        for (int i = 0; i < line.size() - 1; i++) {
+            direction = (line[i].first == line[i + 1].first)
+                ? (line[i].second < line[i + 1].second ? make_pair(0, 1)
+                                                       : make_pair(0, -1))
+                : (line[i].first < line[i + 1].first ? make_pair(1, 0)
+                                                     : make_pair(-1, 0));
+            coordinates = line[i];
+            map[coordinates.second][coordinates.first] = '#';
+            while (coordinates != line[i + 1]) {
+                coordinates = { coordinates.first + direction.first,
+                                coordinates.second + direction.second };
+                map[coordinates.second][coordinates.first] = '#';
+            }
+        }
+    }
+
+    return map;
+}
+
+void print_map(const vector<vector<char>>& map) {
+    for (int i = 0; i < map.size(); i++) {
+        for (int j = 0; j < map[0].size(); j++)
+            cout << map[i][j] << " ";
+        cout << endl;
+    }
+}
+
 int main() {
     vector<vector<pair<int, int>>> lines = read_input();
-    pair<int, int> limits = find_limits(lines);
-
-    cout << limits.first << " " << limits.second << endl;
+    vector<vector<char>> map = make_map(lines);
+    print_map(map);
 
     return 0;
 }
