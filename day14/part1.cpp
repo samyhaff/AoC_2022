@@ -2,6 +2,8 @@
 
 using namespace std;
 
+const pair<int, int> FALLING_POINT = { 500, 0 };
+
 vector<vector<pair<int, int>>> read_input() {
     vector<vector<pair<int, int>>> lines;
     string line, word;
@@ -59,6 +61,38 @@ vector<vector<char>> make_map(const vector<vector<pair<int, int>>>& lines) {
     return map;
 }
 
+bool simulate_falling_sand(vector<vector<char>>& map) {
+    pair<int, int> pos = FALLING_POINT;
+    int x_lim = map[0].size(), y_lim = map.size();
+
+    while (true) {
+        if (pos.second + 1 >= y_lim) {
+            return false;
+        } else if (map[pos.second + 1][pos.first] == '.') {
+            pos.second++;
+        }  else if (pos.second + 1 >= y_lim || pos.first - 1 < 0) {
+            return false;
+        } else if (map[pos.second + 1][pos.first - 1] == '.') {
+            pos.first--;
+            pos.second++;
+        }  else if (pos.second + 1 >= y_lim || pos.first + 1 >= x_lim) {
+            return false;
+        } else if (map[pos.second + 1][pos.first + 1] == '.') {
+            pos.first++;
+            pos.second++;
+        } else {
+            map[pos.second][pos.first] = 'o';
+            return true;
+        }
+    }
+}
+
+int solve(vector<vector<char>>& map) {
+    int ans = 0;
+    while (simulate_falling_sand(map)) ans++;
+    return ans;
+}
+
 void print_map(const vector<vector<char>>& map) {
     for (int i = 0; i < map.size(); i++) {
         for (int j = 0; j < map[0].size(); j++)
@@ -70,7 +104,9 @@ void print_map(const vector<vector<char>>& map) {
 int main() {
     vector<vector<pair<int, int>>> lines = read_input();
     vector<vector<char>> map = make_map(lines);
-    print_map(map);
+    int ans = solve(map);
+
+    cout << ans << endl;
 
     return 0;
 }
